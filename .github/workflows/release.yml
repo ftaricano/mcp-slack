@@ -16,11 +16,11 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: npm
@@ -31,7 +31,7 @@ jobs:
       - run: npm run build
 
       - name: Create release PR or publish
-        uses: changesets/action@v1
+        uses: changesets/action@v1.8.0
         with:
           publish: npm run release
           version: npm run version
