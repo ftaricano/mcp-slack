@@ -1,0 +1,16 @@
+npx lint-staged
+
+# Secret scanning (mirrors global ~/.git-hooks/pre-commit since husky
+# overrides core.hooksPath to .husky/_)
+GITLEAKS="$HOME/bin/gitleaks"
+if [ -x "$GITLEAKS" ]; then
+  if ! "$GITLEAKS" protect --staged --no-banner 2>/dev/null; then
+    echo ""
+    echo "BLOCKED: Potential secret detected in staged files."
+    echo "Run: gitleaks protect --staged -v"
+    echo "If false positive, add a fingerprint to .gitleaksignore"
+    exit 1
+  fi
+else
+  echo "warn: gitleaks not found at $GITLEAKS - skipping secret scan"
+fi

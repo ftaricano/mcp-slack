@@ -1,0 +1,47 @@
+services:
+  mcp-slack:
+    build:
+      context: .
+      args:
+        NODE_VERSION: '20'
+    image: mcp-slack:local
+    env_file:
+      - .env
+    # REDIS_URL points the app at the bundled redis sidecar. Without this the
+    # token store silently falls back to the FileTokenStore default path
+    # *inside* the container (no volume) — installs vanish on
+    # `docker compose up --force-recreate`. Keep this even if `.env` is empty.
+    environment:
+      REDIS_URL: redis://redis:6379
+    ports:
+      - '3000:3000'
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'wget', '-qO-', 'http://localhost:3000/health']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    # Default config is ephemeral (`--save "" --appendonly no`) for fast local
+    # dev. The redis-data volume below costs nothing while these flags are off
+    # and lets operators flip on persistence (AOF/RDB) without editing this
+    # file.
+    command: ['redis-server', '--save', '', '--appendonly', 'no']
+    volumes:
+      - redis-data:/data
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  redis-data: {}
