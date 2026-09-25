@@ -2,10 +2,11 @@
 
 ## Reporting a vulnerability
 
-Please report security issues privately through:
+Please report security issues privately through GitHub private vulnerability reporting:
 
-- GitHub Security Advisories: <https://github.com/ftaricano/mcp-slack/security/advisories/new>
-- Email: **Fernando Taricano — <Fernando.taricano@cpzseg.com.br>**
+- <https://github.com/ftaricano/mcp-slack/security/advisories/new>
+
+(Repository **Security** tab → **Report a vulnerability**.)
 
 Include:
 

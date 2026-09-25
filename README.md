@@ -38,13 +38,14 @@
 
 ## Install
 
+Install from source. This project is not published to npm: the `mcp-slack` name on the npm registry belongs to an unrelated package, so do not install it by name.
+
 ```bash
-npm install -g mcp-slack
-# or
 git clone https://github.com/ftaricano/mcp-slack.git
 cd mcp-slack
 npm ci
 npm run build
+npm install -g .   # puts the `mcp-slack` CLI on your PATH
 ```
 
 Node 18, 20, and 22 are tested in CI.
